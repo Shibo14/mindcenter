@@ -3,300 +3,905 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="MINDCENTER - Interaktiv ta'lim platformasi. O'ynab o'rganing!">
-    <title>MINDCENTER - Interaktiv Ta'lim</title>
-    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>MINDCENTER - Aqlingizni rivojlantiring!</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+        }
+        
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        
+        .center {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        
+        .text-center { text-align: center; }
+        .mb-4 { margin-bottom: 1.5rem; }
+        .mb-2 { margin-bottom: 0.5rem; }
+        .mt-4 { margin-top: 1.5rem; }
+        .mb-6 { margin-bottom: 2rem; }
+        
+        h1 {
+            font-size: 3rem;
+            font-weight: 900;
+            color: #667eea;
+        }
+        
+        .emoji-big {
+            font-size: 5rem;
+        }
+        
+        input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        
+        input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #374151;
+        }
+        
+        .btn {
+            width: 100%;
+            padding: 16px;
+            border: none;
+            border-radius: 12px;
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            transform: scale(1.05);
+        }
+        
+        .btn-secondary {
+            background: #e5e7eb;
+            color: #374151;
+        }
+        
+        .btn-secondary:hover {
+            background: #d1d5db;
+        }
+        
+        .error {
+            background: #fee;
+            border: 2px solid #fcc;
+            color: #c33;
+            padding: 12px;
+            border-radius: 12px;
+            font-weight: 600;
+        }
+        
+        .hidden { display: none; }
+        
+        .header {
+            background: rgba(255,255,255,0.2);
+            padding: 16px;
+            margin-bottom: 20px;
+        }
+        
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+        
+        .avatar {
+            font-size: 3rem;
+            padding: 16px;
+            border-radius: 16px;
+            display: inline-block;
+        }
+        
+        .stats {
+            display: flex;
+            gap: 12px;
+        }
+        
+        .stat-badge {
+            background: rgba(255,255,255,0.3);
+            padding: 12px 20px;
+            border-radius: 50px;
+            color: white;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .nav {
+            background: rgba(255,255,255,0.1);
+            padding: 16px;
+            margin-bottom: 20px;
+        }
+        
+        .nav-buttons {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        
+        .nav-btn {
+            padding: 12px 24px;
+            border-radius: 50px;
+            font-weight: 700;
+            cursor: pointer;
+            border: none;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+        
+        .nav-btn.active {
+            background: white;
+            color: #667eea;
+        }
+        
+        .nav-btn:not(.active) {
+            background: rgba(255,255,255,0.2);
+            color: white;
+        }
+        
+        .grid {
+            display: grid;
+            gap: 24px;
+        }
+        
+        .grid-2 {
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        }
+        
+        .grid-4 {
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        }
+        
+        .grid-5 {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 12px;
+        }
+        
+        .level-btn {
+            aspect-ratio: 1;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 18px;
+            border: 2px solid;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .level-btn:not(:disabled):hover {
+            transform: scale(1.1);
+        }
+        
+        .level-btn:disabled {
+            cursor: not-allowed;
+            opacity: 0.5;
+        }
+        
+        .message {
+            position: fixed;
+            top: 32px;
+            right: 32px;
+            background: white;
+            padding: 16px 24px;
+            border-radius: 16px;
+            font-weight: 700;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            border: 2px solid #667eea;
+            z-index: 1000;
+        }
+        
+        .question-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+        
+        .option-btn {
+            padding: 40px;
+            border-radius: 24px;
+            font-size: 2rem;
+            font-weight: 900;
+            color: white;
+            border: 4px solid white;
+            cursor: pointer;
+            background: linear-gradient(135deg, #8b5cf6, #6366f1);
+            transition: all 0.3s;
+        }
+        
+        .option-btn:not(:disabled):hover {
+            transform: scale(1.1);
+        }
+        
+        .option-btn:disabled {
+            opacity: 0.5;
+        }
+        
+        .progress-dots {
+            display: flex;
+            gap: 12px;
+        }
+        
+        .progress-dot {
+            width: 56px;
+            height: 56px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 18px;
+            border: 2px solid;
+        }
+        
+        .result-item {
+            padding: 16px;
+            border-radius: 12px;
+            border: 2px solid;
+            margin-bottom: 12px;
+        }
+        
+        .result-correct {
+            background: #dcfce7;
+            border-color: #22c55e;
+        }
+        
+        .result-wrong {
+            background: #fee2e2;
+            border-color: #ef4444;
+        }
+    </style>
 </head>
 <body>
-    <div id="root"></div>
+    <div id="app"></div>
 
-    <script type="text/babel">
-        const { useState, useEffect } = React;
+    <script>
+        // State
+        let state = {
+            screen: 'login',
+            isReg: false,
+            form: { u: '', p: '', p2: '', a: '' },
+            player: null,
+            board: [],
+            subject: null,
+            level: null,
+            qi: 0,
+            questions: [],
+            answers: [],
+            active: false,
+            feedback: '',
+            message: '',
+            error: ''
+        };
 
-        // Icons
-        const Star = ({size=24, className=""}) => <svg className={className} width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>;
-        const Zap = ({size=24, className=""}) => <svg className={className} width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>;
-        const ShoppingBag = ({size=24, className=""}) => <svg className={className} width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>;
-        const User = ({size=24, className=""}) => <svg className={className} width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>;
-        const Map = ({size=24, className=""}) => <svg className={className} width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/></svg>;
-        const Lock = ({size=24, className=""}) => <svg className={className} width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>;
-        const CheckCircle = ({size=24, className=""}) => <svg className={className} width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>;
-        const XCircle = ({size=24, className=""}) => <svg className={className} width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>;
-        const LogOut = ({size=24, className=""}) => <svg className={className} width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>;
-        const TrendingUp = ({size=24, className=""}) => <svg className={className} width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>;
-        const Brain = ({size=24, className=""}) => <svg className={className} width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 1.98-3A2.5 2.5 0 0 1 9.5 2Z"/><path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96.44 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-1.98-3A2.5 2.5 0 0 0 14.5 2Z"/></svg>;
-        const Battery = ({size=24, className=""}) => <svg className={className} width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="1" y="6" width="18" height="12" rx="2" ry="2"/><line x1="23" y1="13" x2="23" y2="11"/></svg>;
-        const Send = ({size=24, className=""}) => <svg className={className} width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>;
-
-        const App = () => {
-          const [st, setSt] = useState('login');
-          const [f, setF] = useState({ u: '', p: '', p2: '', a: '' });
-          const [reg, setReg] = useState(false);
-          const [pl, setPl] = useState(null);
-          const [bd, setBd] = useState([]);
-          const [sb, setSb] = useState(null);
-          const [lv, setLv] = useState(null);
-          const [qi, setQi] = useState(0);
-          const [q, setQ] = useState([]);
-          const [an, setAn] = useState([]);
-          const [ac, setAc] = useState(false);
-          const [fb, setFb] = useState('');
-          const [ms, setMs] = useState('');
-          const [err, setErr] = useState('');
-
-          const subs = {
+        const subs = {
             math: { n: 'Matematika', e: '🧮', c: '#3b82f6' },
             eng: { n: 'Ingliz', e: '📚', c: '#10b981' },
             sci: { n: 'Fan', e: '🔬', c: '#a855f7' },
             log: { n: 'Mantiq', e: '🧩', c: '#f97316' }
-          };
+        };
 
-          const avs = {
+        const avs = {
             n: { n: 'Ninja', e: '🥷', c: '#475569' },
             w: { n: 'Sehrgar', e: '🧙‍♂️', c: '#9333ea', p: 500 },
             r: { n: 'Robot', e: '🤖', c: '#0ea5e9', p: 800 },
             a: { n: 'Alien', e: '👽', c: '#10b981', p: 1000 }
-          };
+        };
 
-          useEffect(() => {
-            if (pl) {
-              const u = JSON.parse(localStorage.getItem('mc') || '{}');
-              u[pl.u] = pl;
-              localStorage.setItem('mc', JSON.stringify(u));
-              const b = Object.entries(u).map(([k, v]) => ({u:k,n:v.n,x:v.x,l:v.l})).sort((a,b)=>b.x-a.x).slice(0,10);
-              setBd(b);
+        // Helper functions
+        function msg(text) {
+            state.message = text;
+            render();
+            setTimeout(() => {
+                state.message = '';
+                render();
+            }, 3000);
+        }
+
+        function loadBoard() {
+            const users = JSON.parse(localStorage.getItem('mc') || '{}');
+            state.board = Object.entries(users)
+                .map(([k, v]) => ({ u: k, n: v.n, x: v.x, l: v.l }))
+                .sort((a, b) => b.x - a.x)
+                .slice(0, 10);
+        }
+
+        function savePlayer() {
+            if (!state.player) return;
+            const users = JSON.parse(localStorage.getItem('mc') || '{}');
+            users[state.player.u] = state.player;
+            localStorage.setItem('mc', JSON.stringify(users));
+            loadBoard();
+        }
+
+        function login() {
+            state.error = '';
+            if (!state.form.u || !state.form.p) {
+                state.error = 'Barcha maydonlarni toldiring!';
+                render();
+                return;
             }
-          }, [pl]);
+            const users = JSON.parse(localStorage.getItem('mc') || '{}');
+            if (users[state.form.u] && users[state.form.u].p === state.form.p) {
+                state.player = users[state.form.u];
+                state.screen = 'map';
+                state.form = { u: '', p: '', p2: '', a: '' };
+                msg('Xush kelibsiz!');
+            } else {
+                state.error = 'Notogri username yoki parol!';
+            }
+            render();
+        }
 
-          useEffect(() => {
-            const u = JSON.parse(localStorage.getItem('mc') || '{}');
-            const b = Object.entries(u).map(([k, v]) => ({u:k,n:v.n,x:v.x,l:v.l})).sort((a,b)=>b.x-a.x).slice(0,10);
-            setBd(b);
-          }, []);
+        function register() {
+            state.error = '';
+            if (!state.form.u || !state.form.p || !state.form.p2 || !state.form.a) {
+                state.error = 'Barcha maydonlarni toldiring!';
+                render();
+                return;
+            }
+            const users = JSON.parse(localStorage.getItem('mc') || '{}');
+            if (users[state.form.u]) {
+                state.error = 'Username band!';
+                render();
+                return;
+            }
+            if (state.form.p.length < 6) {
+                state.error = 'Parol kamida 6 ta belgidan iborat bolishi kerak!';
+                render();
+                return;
+            }
+            if (state.form.p !== state.form.p2) {
+                state.error = 'Parollar mos kelmadi!';
+                render();
+                return;
+            }
+            if (state.form.a < 5 || state.form.a > 100) {
+                state.error = 'Yoshni togri kiriting!';
+                render();
+                return;
+            }
+            const newPlayer = {
+                u: state.form.u,
+                p: state.form.p,
+                n: state.form.u,
+                a: state.form.a,
+                c: 0,
+                x: 0,
+                l: 1,
+                e: 100,
+                sk: ['n'],
+                s: 'n',
+                d: []
+            };
+            users[state.form.u] = newPlayer;
+            localStorage.setItem('mc', JSON.stringify(users));
+            state.player = newPlayer;
+            state.screen = 'map';
+            state.form = { u: '', p: '', p2: '', a: '' };
+            msg('Royxatdan otdingiz!');
+            render();
+        }
 
-          const msg = (t) => { setMs(t); setTimeout(() => setMs(''), 3000); };
-
-          const login = () => {
-            setErr('');
-            if (!f.u || !f.p) { setErr('Barcha maydonlarni toldiring!'); return; }
-            const u = JSON.parse(localStorage.getItem('mc') || '{}');
-            if (u[f.u] && u[f.u].p === f.p) { 
-              setPl(u[f.u]); setSt('map'); msg('Xush kelibsiz!'); setF({u:'',p:'',p2:'',a:''});
-            } else setErr('Notogri username yoki parol!');
-          };
-
-          const register = () => {
-            setErr('');
-            if (!f.u || !f.p || !f.p2 || !f.a) { setErr('Barcha maydonlarni toldiring!'); return; }
-            const u = JSON.parse(localStorage.getItem('mc') || '{}');
-            if (u[f.u]) { setErr('Username band!'); return; }
-            if (f.p.length < 6) { setErr('Parol kamida 6 ta belgidan iborat bolishi kerak!'); return; }
-            if (f.p !== f.p2) { setErr('Parollar mos kelmadi!'); return; }
-            if (f.a < 5 || f.a > 100) { setErr('Yoshni togri kiriting!'); return; }
-            const np = {u:f.u,p:f.p,n:f.u,a:f.a,c:0,x:0,l:1,e:100,sk:['n'],s:'n',d:[]};
-            u[f.u] = np;
-            localStorage.setItem('mc', JSON.stringify(u));
-            setPl(np); setSt('map'); msg('Royxatdan otdingiz!'); setF({u:'',p:'',p2:'',a:''});
-          };
-
-          const genQ = (sub) => {
+        function genQ(sub) {
             const qs = [];
             for (let i = 0; i < 5; i++) {
-              if (sub === 'math') {
-                const ops = ['+','-','×'];
-                const op = ops[Math.floor(Math.random()*3)];
-                let n1 = Math.floor(Math.random()*50)+1;
-                let n2 = Math.floor(Math.random()*50)+1;
-                if (op === '-' && n1 < n2) [n1,n2] = [n2,n1];
-                const a = op==='+'?n1+n2:op==='-'?n1-n2:n1*n2;
-                const o = [a, a+5, a-3, a+7].filter(x=>x>0).slice(0,4).sort(()=>Math.random()-0.5);
-                qs.push({q:n1+' '+op+' '+n2+' = ?', a, o});
-              } else if (sub === 'eng') {
-                const w = [{w:'apple',t:'olma'},{w:'book',t:'kitob'},{w:'cat',t:'mushuk'},{w:'happy',t:'baxtli'},{w:'water',t:'suv'}];
-                const x = w[i];
-                qs.push({q:x.w+' manosi?', a:x.t, o:[x.t,'test','demo','quiz'].sort(()=>Math.random()-0.5)});
-              } else if (sub === 'sci') {
-                const w = [{q:'Yulduz?',a:'Quyosh'},{q:'Suv?',a:'H2O'},{q:'Sayyora?',a:'Yupiter'},{q:'Osimlik?',a:'Kislorod'},{q:'Mineral?',a:'Olmos'}];
-                qs.push({q:w[i].q, a:w[i].a, o:[w[i].a,'test','demo','quiz'].sort(()=>Math.random()-0.5)});
-              } else {
-                const w = [{q:'2,4,6,8,?',a:'10'},{q:'1,1,2,3,5,?',a:'8'},{q:'5,10,20,?',a:'40'},{q:'Uchburchak?',a:'3'},{q:'100,90,?',a:'80'}];
-                qs.push({q:w[i].q, a:w[i].a, o:[w[i].a,'test','demo','quiz'].sort(()=>Math.random()-0.5)});
-              }
+                if (sub === 'math') {
+                    const ops = ['+', '-', '×'];
+                    const op = ops[Math.floor(Math.random() * 3)];
+                    let n1 = Math.floor(Math.random() * 50) + 1;
+                    let n2 = Math.floor(Math.random() * 50) + 1;
+                    if (op === '-' && n1 < n2) [n1, n2] = [n2, n1];
+                    const a = op === '+' ? n1 + n2 : op === '-' ? n1 - n2 : n1 * n2;
+                    const o = [a, a + 5, a - 3, a + 7].filter(x => x > 0).slice(0, 4).sort(() => Math.random() - 0.5);
+                    qs.push({ q: `${n1} ${op} ${n2} = ?`, a, o });
+                } else if (sub === 'eng') {
+                    const w = [
+                        { w: 'apple', t: 'olma' },
+                        { w: 'book', t: 'kitob' },
+                        { w: 'cat', t: 'mushuk' },
+                        { w: 'happy', t: 'baxtli' },
+                        { w: 'water', t: 'suv' }
+                    ];
+                    const x = w[i];
+                    qs.push({ q: `${x.w} manosi?`, a: x.t, o: [x.t, 'nok', 'qalam', 'it'].sort(() => Math.random() - 0.5) });
+                } else if (sub === 'sci') {
+                    const w = [
+                        { q: 'Yulduz?', a: 'Quyosh' },
+                        { q: 'Suv?', a: 'H2O' },
+                        { q: 'Sayyora?', a: 'Yupiter' },
+                        { q: 'Osimlik?', a: 'Kislorod' },
+                        { q: 'Mineral?', a: 'Olmos' }
+                    ];
+                    qs.push({ q: w[i].q, a: w[i].a, o: [w[i].a, 'javob1', 'javob2', 'javob3'].sort(() => Math.random() - 0.5) });
+                } else {
+                    const w = [
+                        { q: '2,4,6,8,?', a: '10' },
+                        { q: '1,1,2,3,5,?', a: '8' },
+                        { q: '5,10,20,?', a: '40' },
+                        { q: 'Uchburchak?', a: '3' },
+                        { q: '100,90,?', a: '80' }
+                    ];
+                    qs.push({ q: w[i].q, a: w[i].a, o: [w[i].a, '12', '15', '20'].sort(() => Math.random() - 0.5) });
+                }
             }
             return qs;
-          };
+        }
 
-          const start = (s, l) => {
-            if (pl.e < 10) { msg('Energiya yoq!'); return; }
-            setQ(genQ(s)); setAn([]); setQi(0); setSb(s); setLv(l); setAc(true); setFb('');
-            setPl({...pl, e: pl.e - 10});
-          };
+        function start(s, l) {
+            if (state.player.e < 10) {
+                msg('Energiya yoq!');
+                return;
+            }
+            state.questions = genQ(s);
+            state.answers = [];
+            state.qi = 0;
+            state.subject = s;
+            state.level = l;
+            state.active = true;
+            state.feedback = '';
+            state.player.e -= 10;
+            savePlayer();
+            state.screen = 'quiz';
+            render();
+        }
 
-          const check = (sel) => {
-            const c = q[qi];
+        function check(sel) {
+            const c = state.questions[state.qi];
             const cor = sel === c.a;
-            const na = [...an, {q:c.q,u:sel,a:c.a,cor}];
-            setAn(na);
-            setFb(cor ? '✅ Togri!' : '❌ Xato: ' + c.a);
-            if (!cor) setPl(p => ({...p, x: Math.max(0, p.x - Math.floor(p.x*0.02))}));
+            state.answers.push({ q: c.q, u: sel, a: c.a, cor });
+            state.feedback = cor ? '✅ Togri!' : '❌ Xato: ' + c.a;
+            
+            if (!cor) {
+                state.player.x = Math.max(0, state.player.x - Math.floor(state.player.x * 0.02));
+            }
+            
+            render();
+            
             setTimeout(() => {
-              if (qi < 4) { setQi(qi+1); setFb(''); }
-              else {
-                const cnt = na.filter(x=>x.cor).length;
-                const nx = pl.x + cnt*50 + lv*20;
-                const nl = Math.floor(nx/100)+1;
-                const up = nl > pl.l;
-                setPl(p => ({...p, c:p.c+cnt*50+(up?200:0), x:nx, l:nl, e:Math.min(p.e+5,100), d:[...p.d,sb+'-'+lv]}));
-                if (up) msg('Level Up! +200 coin!');
-                setAc(false); setSt('result');
-              }
+                if (state.qi < 4) {
+                    state.qi++;
+                    state.feedback = '';
+                    render();
+                } else {
+                    const cnt = state.answers.filter(x => x.cor).length;
+                    const nx = state.player.x + cnt * 50 + state.level * 20;
+                    const nl = Math.floor(nx / 100) + 1;
+                    const up = nl > state.player.l;
+                    
+                    state.player.c += cnt * 50 + (up ? 200 : 0);
+                    state.player.x = nx;
+                    state.player.l = nl;
+                    state.player.e = Math.min(state.player.e + 5, 100);
+                    state.player.d.push(`${state.subject}-${state.level}`);
+                    
+                    savePlayer();
+                    
+                    if (up) msg('Level Up! +200 coin!');
+                    
+                    state.active = false;
+                    state.screen = 'result';
+                    render();
+                }
             }, 1500);
-          };
+        }
 
-          if (st === 'login') {
-            return (
-              <div className="min-h-screen flex items-center justify-center p-4" style={{background:'linear-gradient(135deg,#667eea,#764ba2)'}}>
-                <div className="bg-white rounded-3xl shadow-2xl p-8 max-w-md w-full">
-                  <div className="text-center mb-8">
-                    <div className="text-7xl mb-4">🧠</div>
-                    <h1 className="text-5xl font-black mb-2" style={{color:'#667eea'}}>MINDCENTER</h1>
-                    <p className="text-gray-600 font-semibold">Aqlingizni rivojlantiring!</p>
-                  </div>
-                  <div className="space-y-4">
-                    <div>
-                      <label className="block text-sm font-bold text-gray-700 mb-2">Username</label>
-                      <input type="text" placeholder="Foydalanuvchi nomi" className="w-full px-4 py-3 rounded-xl border-2 border-gray-300 focus:border-purple-500 focus:outline-none text-lg"
-                        value={f.u} onChange={(e) => setF({...f, u: e.target.value})} />
-                    </div>
-                    <div>
-                      <label className="block text-sm font-bold text-gray-700 mb-2">Parol {reg && '(kamida 6 belgi)'}</label>
-                      <input type="password" placeholder="Parol" className="w-full px-4 py-3 rounded-xl border-2 border-gray-300 focus:border-purple-500 focus:outline-none text-lg"
-                        value={f.p} onChange={(e) => setF({...f, p: e.target.value})} />
-                    </div>
-                    {reg && (
-                      <>
-                        <div>
-                          <label className="block text-sm font-bold text-gray-700 mb-2">Parolni takrorlang</label>
-                          <input type="password" placeholder="Qayta kiriting" className="w-full px-4 py-3 rounded-xl border-2 border-gray-300 focus:border-purple-500 focus:outline-none text-lg"
-                            value={f.p2} onChange={(e) => setF({...f, p2: e.target.value})} />
+        function buyEnergy() {
+            if (state.player.c >= 100) {
+                state.player.c -= 100;
+                state.player.e = Math.min(state.player.e + 50, 100);
+                savePlayer();
+                msg('+50 Energiya!');
+            } else {
+                msg('100 coin kerak!');
+            }
+        }
+
+        function buyAvatar(id) {
+            const av = avs[id];
+            if (av.p && state.player.c >= av.p) {
+                state.player.c -= av.p;
+                state.player.sk.push(id);
+                savePlayer();
+                msg(av.n + ' olindi!');
+            }
+        }
+
+        function equipAvatar(id) {
+            state.player.s = id;
+            savePlayer();
+            render();
+        }
+
+        function logout() {
+            state.player = null;
+            state.screen = 'login';
+            state.form = { u: '', p: '', p2: '', a: '' };
+            render();
+        }
+
+        // Render
+        function render() {
+            const app = document.getElementById('app');
+            
+            if (state.screen === 'login') {
+                app.innerHTML = `
+                    <div class="gradient-bg center">
+                        <div class="card" style="max-width: 500px; width: 100%;">
+                            <div class="text-center mb-4">
+                                <div class="emoji-big">🧠</div>
+                                <h1>MINDCENTER</h1>
+                                <p style="color: #6b7280; font-weight: 600;">Aqlingizni rivojlantiring!</p>
+                            </div>
+                            <div style="margin-bottom: 16px;">
+                                <label>Username</label>
+                                <input type="text" id="username" placeholder="Foydalanuvchi nomi" value="${state.form.u}">
+                            </div>
+                            <div style="margin-bottom: 16px;">
+                                <label>Parol ${state.isReg ? '<span style="font-size: 12px;">(kamida 6 ta)</span>' : ''}</label>
+                                <input type="password" id="password" placeholder="••••••" value="${state.form.p}">
+                            </div>
+                            ${state.isReg ? `
+                                <div style="margin-bottom: 16px;">
+                                    <label>Parolni takrorlang</label>
+                                    <input type="password" id="password2" placeholder="••••••" value="${state.form.p2}">
+                                </div>
+                                <div style="margin-bottom: 16px;">
+                                    <label>Yosh (5-100)</label>
+                                    <input type="number" id="age" placeholder="Yoshingiz" value="${state.form.a}">
+                                </div>
+                            ` : ''}
+                            ${state.error ? `<div class="error mb-4">${state.error}</div>` : ''}
+                            ${state.isReg ? `
+                                <button class="btn btn-secondary mb-2" onclick="handleRegister()">Royxatdan otish</button>
+                                <button class="btn btn-secondary" onclick="handleToggleReg()">Orqaga</button>
+                            ` : `
+                                <button class="btn btn-primary mb-2" onclick="handleLogin()">Kirish</button>
+                                <button class="btn btn-secondary" onclick="handleToggleReg()">Yangi akkaunt</button>
+                            `}
+                            ${state.board.length > 0 ? `
+                                <div class="mt-4">
+                                    <h3 class="text-center" style="color: #6b7280; font-weight: 700; margin-bottom: 16px;">🏆 Top</h3>
+                                    ${state.board.slice(0, 3).map((u, i) => `
+                                        <div style="display: flex; justify-content: space-between; background: #f9fafb; padding: 12px; border-radius: 12px; margin-bottom: 8px;">
+                                            <span style="font-weight: 600;">${i === 0 ? '🥇' : i === 1 ? '🥈' : '🥉'} ${u.n}</span>
+                                            <span style="color: #667eea; font-weight: 700;">${u.x} XP (Lvl ${u.l})</span>
+                                        </div>
+                                    `).join('')}
+                                </div>
+                            ` : ''}
                         </div>
-                        <div>
-                          <label className="block text-sm font-bold text-gray-700 mb-2">Yosh (5-100)</label>
-                          <input type="number" placeholder="Yoshingiz" className="w-full px-4 py-3 rounded-xl border-2 border-gray-300 focus:border-purple-500 focus:outline-none text-lg"
-                            value={f.a} onChange={(e) => setF({...f, a: e.target.value})} />
-                        </div>
-                      </>
-                    )}
-                    {err && <div className="bg-red-100 border-2 border-red-400 text-red-700 px-4 py-3 rounded-xl font-semibold text-center">{err}</div>}
-                    {reg ? (
-                      <div className="space-y-3">
-                        <button onClick={register} className="w-full py-4 rounded-xl font-bold text-xl text-white hover:scale-105 transition shadow-lg" style={{background:'linear-gradient(135deg,#10b981,#059669)'}}>Royxat</button>
-                        <button onClick={() => {setReg(false); setErr(''); setF({u:'',p:'',p2:'',a:''});}} className="w-full bg-gray-200 text-gray-700 py-4 rounded-xl font-bold hover:bg-gray-300 transition">Orqaga</button>
-                      </div>
-                    ) : (
-                      <div className="space-y-3">
-                        <button onClick={login} className="w-full py-4 rounded-xl font-bold text-xl text-white hover:scale-105 transition shadow-lg" style={{background:'linear-gradient(135deg,#667eea,#764ba2)'}}>Kirish</button>
-                        <button onClick={() => {setReg(true); setErr(''); setF({u:'',p:'',p2:'',a:''});}} className="w-full bg-gray-200 text-gray-700 py-4 rounded-xl font-bold hover:bg-gray-300 transition">Yangi akkaunt</button>
-                      </div>
-                    )}
-                  </div>
-                  {bd.length > 0 && (
-                    <div className="mt-8">
-                      <h3 className="text-xl font-bold text-center mb-4" style={{color:'#667eea'}}>🏆 Top</h3>
-                      {bd.slice(0,3).map((u, i) => (
-                        <div key={i} className="flex justify-between bg-gray-50 p-3 rounded-xl mb-2 border border-gray-200">
-                          <span className="font-semibold flex gap-2"><span className="text-2xl">{i===0?'🥇':i===1?'🥈':'🥉'}</span>{u.n}</span>
-                          <span className="font-bold px-3 py-1 rounded-lg text-sm text-white" style={{background:'#667eea'}}>Lvl {u.l}</span>
-                        </div>
-                      ))}
                     </div>
-                  )}
-                  <div className="mt-6 text-center">
-                    <a href="https://t.me/MathTeacher_web" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 text-gray-600 hover:text-purple-600 font-semibold transition">
-                      <Send size={20} /> @MathTeacher_web
-                    </a>
-                  </div>
-                </div>
-                {ms && <div className="fixed top-8 right-8 bg-white text-gray-800 px-6 py-4 rounded-2xl font-bold shadow-2xl border-2 z-50 animate-bounce" style={{borderColor:'#667eea'}}>{ms}</div>}
-              </div>
-            );
-          }
-
-          if (!pl) return null;
-          const av = avs[pl.s];
-
-          if (st === 'result') {
-            const cnt = an.filter(x=>x.cor).length;
-            return (
-              <div className="min-h-screen flex items-center justify-center p-4" style={{background:'linear-gradient(135deg,#667eea,#764ba2)'}}>
-                <div className="max-w-3xl w-full bg-white rounded-3xl p-10 text-center shadow-2xl">
-                  <div className="text-9xl mb-8">{cnt>=4?'🎉':'😊'}</div>
-                  <h2 className="text-6xl font-black mb-8" style={{color:'#667eea'}}>{cnt>=4?'Ajoyib!':'Yaxshi!'}</h2>
-                  <div className="grid grid-cols-3 gap-6 mb-10">
-                    <div className="bg-green-100 p-6 rounded-3xl border-2 border-green-500"><div className="text-5xl font-black text-green-600">{cnt}</div><div className="text-green-700 font-bold">Togri</div></div>
-                    <div className="bg-yellow-100 p-6 rounded-3xl border-2 border-yellow-500"><div className="text-5xl font-black text-yellow-600">+{cnt*50}</div><div className="text-yellow-700 font-bold">Coins</div></div>
-                    <div className="bg-blue-100 p-6 rounded-3xl border-2 border-blue-500"><div className="text-5xl font-black text-blue-600">+{cnt*50}</div><div className="text-blue-700 font-bold">XP</div></div>
-                  </div>
-                  <button onClick={() => setSt('map')} className="text-white px-16 py-5 rounded-full text-3xl font-black hover:scale-110 transition shadow-2xl" style={{background:'linear-gradient(135deg,#10b981,#059669)'}}>Davom 🚀</button>
-                </div>
-              </div>
-            );
-          }
-
-          if (ac && q.length > 0) {
-            const c = q[qi];
-            return (
-              <div className="min-h-screen flex items-center justify-center p-4" style={{background:'linear-gradient(135deg,#667eea,#764ba2)'}}>
-                <div className="max-w-4xl w-full bg-white rounded-3xl p-8 shadow-2xl">
-                  <div className="flex justify-between mb-6">
-                    <div className="font-bold text-3xl flex items-center gap-3" style={{color:'#667eea'}}><Brain className="animate-pulse" /> S {qi+1}/5</div>
-                    <div className="flex gap-3">
-                      {[0,1,2,3,4].map(i => (
-                        <div key={i} className={'w-14 h-14 rounded-2xl flex items-center justify-center font-bold text-xl border-2 '+(i<qi?(an[i]?.cor?'bg-green-500 border-green-600':'bg-red-500 border-red-600')+' text-white':i===qi?'bg-yellow-400 border-yellow-500 text-black':'bg-gray-200 border-gray-300 text-gray-500')}>{i+1}</div>
-                      ))}
+                `;
+                
+                document.getElementById('username').addEventListener('input', (e) => {
+                    state.form.u = e.target.value;
+                });
+                document.getElementById('password').addEventListener('input', (e) => {
+                    state.form.p = e.target.value;
+                });
+                if (state.isReg) {
+                    document.getElementById('password2').addEventListener('input', (e) => {
+                        state.form.p2 = e.target.value;
+                    });
+                    document.getElementById('age').addEventListener('input', (e) => {
+                        state.form.a = e.target.value;
+                    });
+                }
+            } else if (state.screen === 'quiz') {
+                const c = state.questions[state.qi];
+                app.innerHTML = `
+                    <div class="gradient-bg center">
+                        <div class="card" style="max-width: 900px; width: 100%;">
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 24px; flex-wrap: wrap; gap: 16px;">
+                                <div style="font-weight: 700; font-size: 1.5rem; color: #667eea; display: flex; align-items: center; gap: 12px;">
+                                    <span>🧠</span> Savol ${state.qi + 1}/5
+                                </div>
+                                <div class="progress-dots">
+                                    ${[0, 1, 2, 3, 4].map(i => `
+                                        <div class="progress-dot" style="
+                                            ${i < state.qi ? (state.answers[i]?.cor ? 'background: #22c55e; border-color: #16a34a; color: white;' : 'background: #ef4444; border-color: #dc2626; color: white;') : i === state.qi ? 'background: #fbbf24; border-color: #f59e0b; color: black;' : 'background: #e5e7eb; border-color: #d1d5db; color: #9ca3af;'}
+                                        ">${i + 1}</div>
+                                    `).join('')}
+                                </div>
+                            </div>
+                            <div class="text-center mb-6" style="padding: 40px; border-radius: 24px; color: white; background-color: ${subs[state.subject].c};">
+                                <div style="font-size: 5rem; margin-bottom: 24px;">${subs[state.subject].e}</div>
+                                <div style="font-weight: 700; font-size: 1.5rem; margin-bottom: 24px;">Level ${state.level}</div>
+                                <div style="font-size: 2rem; font-weight: 900;">${c.q}</div>
+                            </div>
+                            <div class="question-grid mb-4">
+                                ${c.o.map(opt => `
+                                    <button class="option-btn" onclick="handleCheck('${opt}')" ${state.feedback ? 'disabled' : ''}>${opt}</button>
+                                `).join('')}
+                            </div>
+                            ${state.feedback ? `
+                                <div style="text-align: center; font-size: 1.5rem; font-weight: 900; padding: 24px; border-radius: 24px; border: 4px solid; ${state.feedback.includes('✅') ? 'background: #dcfce7; color: #16a34a; border-color: #22c55e;' : 'background: #fee2e2; color: #dc2626; border-color: #ef4444;'}">${state.feedback}</div>
+                            ` : ''}
+                        </div>
                     </div>
-                  </div>
-                  <div className="text-center mb-10 p-10 rounded-3xl shadow-xl text-white" style={{backgroundColor:subs[sb].c}}>
-                    <div className="text-8xl mb-6">{subs[sb].e}</div>
-                    <div className="font-bold text-2xl mb-6">Level {lv}</div>
-                    <div className="text-4xl font-black">{c.q}</div>
-                  </div>
-                  <div className="grid grid-cols-2 gap-6 mb-8">
-                    {c.o.map((opt, i) => (
-                      <button key={i} onClick={() => check(opt)} disabled={fb !== ''}
-                        className="px-10 py-10 rounded-3xl text-4xl font-black text-white hover:scale-110 transition disabled:opacity-50 shadow-xl border-4 border-white"
-                        style={{background:'linear-gradient(135deg,#8b5cf6,#6366f1)'}}>
-                        {opt}
-                      </button>
-                    ))}
-                  </div>
-                  {fb && <div className={'text-center text-2xl font-black p-6 rounded-3xl border-4 '+(fb.includes('✅')?'bg-green-100 text-green-700 border-green-500':'bg-red-100 text-red-700 border-red-500')}>{fb}</div>}
-                </div>
-              </div>
-            );
-          }
+                `;
+            } else if (state.screen === 'result') {
+                const correct = state.answers.filter(x => x.cor).length;
+                app.innerHTML = `
+                    <div class="gradient-bg center">
+                        <div class="card" style="max-width: 700px; width: 100%;">
+                            <div class="text-center mb-6">
+                                <div class="emoji-big">${correct >= 4 ? '🎉' : correct >= 2 ? '😊' : '😔'}</div>
+                                <h1>Natija</h1>
+                                <p style="color: #6b7280; font-weight: 600; font-size: 1.25rem;">${correct}/5 togri javob</p>
+                            </div>
+                            <div style="margin-bottom: 32px;">
+                                ${state.answers.map((a, i) => `
+                                    <div class="result-item ${a.cor ? 'result-correct' : 'result-wrong'}">
+                                        <div style="font-weight: 700; font-size: 1.125rem; margin-bottom: 8px;">${i + 1}. ${a.q}</div>
+                                        <div style="display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px;">
+                                            <span style="color: ${a.cor ? '#16a34a' : '#dc2626'};">Sizning javob: ${a.u}</span>
+                                            ${!a.cor ? `<span style="color: #16a34a;">Togri: ${a.a}</span>` : ''}
+                                        </div>
+                                    </div>
+                                `).join('')}
+                            </div>
+                            <button class="btn btn-primary" onclick="handleGoToMap()">Map</button>
+                        </div>
+                    </div>
+                `;
+            } else {
+                const av = avs[state.player.s];
+                app.innerHTML = `
+                    <div class="gradient-bg">
+                        <div class="header">
+                            <div class="header-content">
+                                <div style="display: flex; align-items: center; gap: 16px;">
+                                    <div class="avatar" style="background-color: ${av.c};">${av.e}</div>
+                                    <div>
+                                        <div style="color: white; font-weight: 700; font-size: 1.5rem;">${state.player.n}</div>
+                                        <div style="color: #fde047; font-size: 1.125rem; font-weight: 600;">Lvl ${state.player.l}</div>
+                                    </div>
+                                </div>
+                                <div class="stats">
+                                    <div class="stat-badge">⭐ ${state.player.c}</div>
+                                    <div class="stat-badge">⚡ ${state.player.x}</div>
+                                    <div class="stat-badge">🔋 ${state.player.e}</div>
+                                    <button class="stat-badge" onclick="handleLogout()" style="cursor: pointer; background: rgba(239, 68, 68, 0.8);">🚪</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="nav">
+                            <div class="nav-buttons">
+                                <button class="nav-btn ${state.screen === 'map' ? 'active' : ''}" onclick="handleNav('map')">🗺️ Map</button>
+                                <button class="nav-btn ${state.screen === 'rank' ? 'active' : ''}" onclick="handleNav('rank')">📈 Reyting</button>
+                                <button class="nav-btn ${state.screen === 'shop' ? 'active' : ''}" onclick="handleNav('shop')">🛍️ Dokon</button>
+                                <button class="nav-btn ${state.screen === 'prof' ? 'active' : ''}" onclick="handleNav('prof')">👤 Profil</button>
+                            </div>
+                        </div>
+                        <div class="container">
+                            ${state.screen === 'map' ? renderMap() : ''}
+                            ${state.screen === 'rank' ? renderRank() : ''}
+                            ${state.screen === 'shop' ? renderShop() : ''}
+                            ${state.screen === 'prof' ? renderProf() : ''}
+                        </div>
+                        ${state.message ? `<div class="message">${state.message}</div>` : ''}
+                    </div>
+                `;
+            }
+        }
 
-          return (
-            <div className="min-h-screen" style={{background:'linear-gradient(135deg,#667eea,#764ba2)'}}>
-              <div className="bg-white bg-opacity-20 p-4">
-                <div className="max-w-7xl mx-auto flex justify-between items-center flex-wrap gap-4">
-                  <div className="flex items-center gap-4">
-                    <div className="text-5xl p-4 rounded-2xl" style={{backgroundColor:av.c}}>{av.e}</div>
-                    <div><div className="text-white font-bold text-2xl">{pl.n}</div><div className="text-yellow-300 text-lg font-semibold">Lvl {pl.l}</div></div>
-                  </div>
-                  <div className="flex gap-4">
-                    <div className="flex items-center gap-2 bg-white bg-opacity-30 px-5 py-3 rounded-full"><Star className="text-yellow-300" size={24} /><span className="text-white font-bold text-xl">{pl.c}</span></div>
-                    <div className="flex items-center gap-2 bg-white bg-opacity-30 px-5 py-3 rounded-full"><Zap className="text-blue-300" size={24} /><span className="text-white font-bold text-xl">{pl.x}</span></div>
-                    <div className="flex items-center gap-2 bg-white bg-opacity-30 px-5 py-3 rounded-full"><Battery className="text-green-300" size={24} /><span className="text-white font-bold text-xl">{pl.e}</span></div>
-                    <button onClick={() => {setPl(null);setSt('login');setF({u:'',p:'',p2:'',a:''});}} className="bg-red-500 bg-opacity-80 p-3 rounded-full hover:scale-110 transition"><LogOut className="text-white" size={24} /></button>
-                  </div>
+        function renderMap() {
+            return `
+                <h2 style="font-size: 3rem; font-weight: 700; color: white; margin-bottom: 40px; text-align: center;">Fanlar 🗺️</h2>
+                <div class="grid grid-2">
+                    ${Object.entries(subs).map(([sid, sub]) => `
+                        <div class="card">
+                            <div class="text-center mb-6">
+                                <div style="font-size: 5rem; margin-bottom: 16px;">${sub.e}</div>
+                                <h3 style="font-size: 2rem; font-weight: 700; color: ${sub.c};">${sub.n}</h3>
+                            </div>
+                            <div class="grid-5">
+                                ${[...Array(10)].map((_, i) => {
+                                    const l = i + 1;
+                                    const id = `${sid}-${l}`;
+                                    const done = state.player.d.includes(id);
+                                    const lock = i > 0 && !state.player.d.includes(`${sid}-${i}`);
+                                    return `
+                                        <button 
+                                            class="level-btn" 
+                                            onclick="handleStart('${sid}', ${l})"
+                                            ${lock ? 'disabled' : ''}
+                                            style="
+                                                ${done ? 'background: #22c55e; border-color: #16a34a; color: white;' : lock ? 'background: #d1d5db; color: #9ca3af; border-color: #9ca3af;' : `background: ${sub.c}; border-color: ${sub.c}; color: white;`}
+                                            ">
+                                            ${done ? '✅' : lock ? '🔒' : l}
+                                        </button>
+                                    `;
+                                }).join('')}
+                            </div>
+                        </div>
+                    `).join('')}
                 </div>
-              </div>
+                <div style="text-align: center; margin-top: 32px;">
+                    <button class="btn" onclick="handleBuyEnergy()" style="max-width: 400px; background: linear-gradient(135deg, #10b981, #059669); color: white; font-size: 1.5rem;">
+                        ⚡ Energiya (100 coin)
+                    </button>
+                </div>
+            `;
+        }
 
-              <div className="bg-white bg-opacity-10 p-4">
-                <div className="max-w-7xl mx-auto flex justify-center gap-4 flex-wrap">
-                  {[{s:'map',i:<Map/>,t:'Map'},{s:'rank',i:<TrendingUp/>,t:'Reyting'},{s:'shop',i:<ShoppingBag/>,t:'Dokon'},{s:'prof',i:<User/>,t:'Profil'}].map(x => (
-                    <button key={x.s} onClick={() => setSt(x.s)} className={'flex items-center gap-2 px-8 py-4 rounded-full font-bold text
+        function renderRank() {
+            return `
+                <div style="max-width: 600px; margin: 0 auto;">
+                    <h2 style="font-size: 3rem; font-weight: 700; color: white; margin-bottom: 40px; text-align: center;">🏆 Reyting</h2>
+                    ${state.board.map((u, i) => `
+                        <div class="card mb-4" style="display: flex; justify-content: space-between; align-items: center;">
+                            <span style="font-weight: 700; display: flex; gap: 12px; align-items: center; color: #667eea;">
+                                <span style="font-size: 1.875rem;">${i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : i + 1}</span>
+                                <span style="font-size: 1.25rem;">${u.n}</span>
+                            </span>
+                            <div style="text-align: right;">
+                                <div style="font-size: 1.5rem; font-weight: 900; color: #667eea;">${u.x} XP</div>
+                                <div style="font-size: 0.875rem; font-weight: 600; color: #6b7280;">Lvl ${u.l}</div>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+        }
+
+        function renderShop() {
+            return `
+                <h2 style="font-size: 3rem; font-weight: 700; color: white; margin-bottom: 40px; text-align: center;">Dokon 🛍️</h2>
+                <div class="grid grid-4">
+                    ${Object.entries(avs).map(([id, a]) => {
+                        const own = state.player.sk.includes(id);
+                        const eq = state.player.s === id;
+                        return `
+                            <div class="card ${eq ? 'ring-4 ring-yellow-400' : ''}" style="${eq ? 'box-shadow: 0 0 0 4px #facc15;' : ''}">
+                                <div style="font-size: 5rem; margin-bottom: 16px; text-align: center; padding: 24px; border-radius: 16px; background-color: ${a.c};">${a.e}</div>
+                                <h3 style="font-size: 1.5rem; font-weight: 700; text-align: center; margin-bottom: 8px; color: ${a.c};">${a.n}</h3>
+                                ${a.p ? `<div style="text-align: center; margin-bottom: 16px; font-weight: 700; color: #d97706;">${a.p} ⭐</div>` : ''}
+                                ${eq ? '<div style="background: #22c55e; color: white; padding: 12px; border-radius: 50px; text-align: center; font-weight: 700;">✅ Taqilgan</div>' :
+                                own ? `<button class="btn btn-primary" onclick="handleEquip('${id}')">Taqish</button>` :
+                                `<button class="btn" onclick="handleBuy('${id}')" style="background: linear-gradient(135deg, #f59e0b, #d97706); color: white;">Olish</button>`}
+                            </div>
+                        `;
+                    }).join('')}
+                </div>
+            `;
+        }
+
+        function renderProf() {
+            const av = avs[state.player.s];
+            return `
+                <div style="max-width: 600px; margin: 0 auto;">
+                    <h2 style="font-size: 3rem; font-weight: 700; color: white; margin-bottom: 40px; text-align: center;">Profil 👤</h2>
+                    <div class="card">
+                        <div style="font-size: 6rem; text-align: center; margin-bottom: 24px; padding: 32px; border-radius: 24px; background-color: ${av.c};">${av.e}</div>
+                        ${[
+                            { l: 'Ism', v: state.player.n },
+                            { l: 'Yosh', v: state.player.a },
+                            { l: 'Level', v: state.player.l },
+                            { l: 'Coins', v: state.player.c },
+                            { l: 'XP', v: state.player.x },
+                            { l: 'Energiya', v: state.player.e },
+                            { l: 'Tugallandi', v: `${state.player.d.length}/40` }
+                        ].map(x => `
+                            <div style="display: flex; justify-content: space-between; background: #f9fafb; padding: 16px; border-radius: 16px; border: 1px solid #e5e7eb; margin-bottom: 16px;">
+                                <span style="font-weight: 700; color: #374151;">${x.l}:</span>
+                                <span style="font-size: 1.5rem; font-weight: 700; color: #667eea;">${x.v}</span>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+        }
+
+        // Event handlers
+        function handleLogin() {
+            login();
+        }
+
+        function handleRegister() {
+            register();
+        }
+
+        function handleToggleReg() {
+            state.isReg = !state.isReg;
+            state.error = '';
+            state.form = { u: '', p: '', p2: '', a: '' };
+            render();
+        }
+
+        function handleStart(sid, l) {
+            start(sid, l);
+        }
+
+        function handleCheck(sel) {
+            check(sel);
+        }
+
+        function handleGoToMap() {
+            state.screen = 'map';
+            render();
+        }
+
+        function handleNav(screen) {
+            state.screen = screen;
+            render();
+        }
+
+        function handleLogout() {
+            logout();
+        }
+
+        function handleBuyEnergy() {
+            buyEnergy();
+        }
+
+        function handleBuy(id) {
+            buyAvatar(id);
+        }
+
+        function handleEquip(id) {
+            equipAvatar(id);
+        }
+
+        // Initialize
+        loadBoard();
+        render();
+    </script>
+</body>
+</html>
